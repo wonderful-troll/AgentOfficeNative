@@ -1,0 +1,423 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0B19D28C5738448FB7F206D4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CF04C0C25B4B9CAA249972 /* ContentView.swift */; };
+		15EDCC1EF5EC4589B044BAF8 /* SharedModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3A788D115D49E6AAA04BC3 /* SharedModels.swift */; };
+		31BAC02721454EC6B034C144 /* AgentWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F2EA1EA38494E844B2AD6 /* AgentWidgetView.swift */; };
+		58A3BAA9CC5E4ABC94F0CE7A /* AgentWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 200D36ACE5134ED59CE44E9E /* AgentWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		638D59C0F1A4467680850B57 /* AgentOfficeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83217DA52043492989A9B7F4 /* AgentOfficeApp.swift */; };
+		8F5EAB32F77C448AB00DD01F /* AgentWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC1AF02E4344A279B123DCB /* AgentWidgetBundle.swift */; };
+		B6338A27F5D84B69B1C03BC5 /* AgentWidgetIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB1D7C5A10C48F8B7A575C6 /* AgentWidgetIntent.swift */; };
+		C9340DD6937041EE823620AB /* AgentWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1A3F86C17647ACB12A00DD /* AgentWidget.swift */; };
+		EB47210A777A43F5BA71621F /* SharedDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70494A104A164BECAE786BEC /* SharedDataStore.swift */; };
+		F389FB385BC54D11BED9F734 /* SharedModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3A788D115D49E6AAA04BC3 /* SharedModels.swift */; };
+		F7A6B156A2D84E32BCDAC185 /* SharedDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70494A104A164BECAE786BEC /* SharedDataStore.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		45A7B38CB6CB4385B414FABF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29641FF6B2A14560AB08DDCF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D41A9A475E8448DFBCDBBA6E;
+			remoteInfo = AgentWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E4B3ECB165FD4CB3BFF1C58F /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				58A3BAA9CC5E4ABC94F0CE7A /* AgentWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1A819F561D324C7DBFA2E0D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		200D36ACE5134ED59CE44E9E /* AgentWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = AgentWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		47F15B26E22F4F4A90CCC403 /* AgentWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AgentWidget.entitlements; sourceTree = "<group>"; };
+		4C65BD13B04F42DAA35511AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		54CF04C0C25B4B9CAA249972 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		5A6B66ACA593445EA434CD24 /* AgentOffice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgentOffice.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A6F2EA1EA38494E844B2AD6 /* AgentWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentWidgetView.swift; sourceTree = "<group>"; };
+		6AC1AF02E4344A279B123DCB /* AgentWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentWidgetBundle.swift; sourceTree = "<group>"; };
+		70494A104A164BECAE786BEC /* SharedDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataStore.swift; sourceTree = "<group>"; };
+		7DB1D7C5A10C48F8B7A575C6 /* AgentWidgetIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentWidgetIntent.swift; sourceTree = "<group>"; };
+		83217DA52043492989A9B7F4 /* AgentOfficeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentOfficeApp.swift; sourceTree = "<group>"; };
+		8B3A788D115D49E6AAA04BC3 /* SharedModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedModels.swift; sourceTree = "<group>"; };
+		8D1A3F86C17647ACB12A00DD /* AgentWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentWidget.swift; sourceTree = "<group>"; };
+		B4645188BE7F4AF591F52B51 /* AgentOfficeApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AgentOfficeApp.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1AB8E7DE3D204962B3B3661D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3458F4B9C7A41C9BEE79377 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		02B5CD9938224D8395C05EF0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5A6B66ACA593445EA434CD24 /* AgentOffice.app */,
+				200D36ACE5134ED59CE44E9E /* AgentWidget.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1C2EAF8F2F67411786E053CA = {
+			isa = PBXGroup;
+			children = (
+				40A5082841ED4BC6BAE1E7B4 /* AgentOfficeApp */,
+				3610C48852FD4F378496E90B /* AgentWidget */,
+				02B5CD9938224D8395C05EF0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3610C48852FD4F378496E90B /* AgentWidget */ = {
+			isa = PBXGroup;
+			children = (
+				6AC1AF02E4344A279B123DCB /* AgentWidgetBundle.swift */,
+				8D1A3F86C17647ACB12A00DD /* AgentWidget.swift */,
+				5A6F2EA1EA38494E844B2AD6 /* AgentWidgetView.swift */,
+				7DB1D7C5A10C48F8B7A575C6 /* AgentWidgetIntent.swift */,
+				4C65BD13B04F42DAA35511AB /* Info.plist */,
+				47F15B26E22F4F4A90CCC403 /* AgentWidget.entitlements */,
+			);
+			path = AgentWidget;
+			sourceTree = "<group>";
+		};
+		40A5082841ED4BC6BAE1E7B4 /* AgentOfficeApp */ = {
+			isa = PBXGroup;
+			children = (
+				83217DA52043492989A9B7F4 /* AgentOfficeApp.swift */,
+				54CF04C0C25B4B9CAA249972 /* ContentView.swift */,
+				8B3A788D115D49E6AAA04BC3 /* SharedModels.swift */,
+				70494A104A164BECAE786BEC /* SharedDataStore.swift */,
+				1A819F561D324C7DBFA2E0D3 /* Info.plist */,
+				B4645188BE7F4AF591F52B51 /* AgentOfficeApp.entitlements */,
+			);
+			path = AgentOfficeApp;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D36E450C4D334362AF15AFE7 /* AgentOfficeApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BFBC5BC1C9064AEA94CF52D5 /* Build configuration list for PBXNativeTarget "AgentOfficeApp" */;
+			buildPhases = (
+				5AABC50052F24DF28433ED7F /* Sources */,
+				1AB8E7DE3D204962B3B3661D /* Frameworks */,
+				B07AF61A3D894CB5BF7B78CC /* Resources */,
+				E4B3ECB165FD4CB3BFF1C58F /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E858B8EA684248C19D6337BD /* PBXTargetDependency */,
+			);
+			name = AgentOfficeApp;
+			productName = AgentOffice;
+			productReference = 5A6B66ACA593445EA434CD24 /* AgentOffice.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D41A9A475E8448DFBCDBBA6E /* AgentWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5AA3C2C06C9D4020A45C60DB /* Build configuration list for PBXNativeTarget "AgentWidget" */;
+			buildPhases = (
+				479AE82EF64D45BD8413F67F /* Sources */,
+				D3458F4B9C7A41C9BEE79377 /* Frameworks */,
+				6AF0D94D43824C629BD8FBD5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AgentWidget;
+			productName = AgentWidget;
+			productReference = 200D36ACE5134ED59CE44E9E /* AgentWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29641FF6B2A14560AB08DDCF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					D36E450C4D334362AF15AFE7 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					D41A9A475E8448DFBCDBBA6E = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = 1768E1A087694FC38E66B6D3 /* Build configuration list for PBXProject "AgentOffice" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = ko;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				ko,
+				Base,
+			);
+			mainGroup = 1C2EAF8F2F67411786E053CA;
+			productRefGroup = 02B5CD9938224D8395C05EF0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D36E450C4D334362AF15AFE7 /* AgentOfficeApp */,
+				D41A9A475E8448DFBCDBBA6E /* AgentWidget */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6AF0D94D43824C629BD8FBD5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B07AF61A3D894CB5BF7B78CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		479AE82EF64D45BD8413F67F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F5EAB32F77C448AB00DD01F /* AgentWidgetBundle.swift in Sources */,
+				C9340DD6937041EE823620AB /* AgentWidget.swift in Sources */,
+				31BAC02721454EC6B034C144 /* AgentWidgetView.swift in Sources */,
+				B6338A27F5D84B69B1C03BC5 /* AgentWidgetIntent.swift in Sources */,
+				F389FB385BC54D11BED9F734 /* SharedModels.swift in Sources */,
+				F7A6B156A2D84E32BCDAC185 /* SharedDataStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5AABC50052F24DF28433ED7F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				638D59C0F1A4467680850B57 /* AgentOfficeApp.swift in Sources */,
+				0B19D28C5738448FB7F206D4 /* ContentView.swift in Sources */,
+				15EDCC1EF5EC4589B044BAF8 /* SharedModels.swift in Sources */,
+				EB47210A777A43F5BA71621F /* SharedDataStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E858B8EA684248C19D6337BD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D41A9A475E8448DFBCDBBA6E /* AgentWidget */;
+			targetProxy = 45A7B38CB6CB4385B414FABF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		069AF6365C7A48EE9D0E3259 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		302699AAC3B74BA8A5B986FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		400E578DB92E4E349FBE8962 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSTCAT_COMPILER_SKIP_APP_STORE_DEPLOYMENT = YES;
+				CODE_SIGN_ENTITLEMENTS = AgentOfficeApp/AgentOfficeApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = W6MU8F6JRY;
+				INFOPLIST_FILE = AgentOfficeApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.agentoffice.app;
+				PRODUCT_NAME = AgentOffice;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		5888FFB262154CB5A909D011 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = AgentWidget/AgentWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = W6MU8F6JRY;
+				INFOPLIST_FILE = AgentWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.agentoffice.app.widget;
+				PRODUCT_NAME = AgentWidget;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		70557592916044E59F18F9E4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = AgentWidget/AgentWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = W6MU8F6JRY;
+				INFOPLIST_FILE = AgentWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.agentoffice.app.widget;
+				PRODUCT_NAME = AgentWidget;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		DC7BF93EAFF64F919B75F7A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = AgentOfficeApp/AgentOfficeApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = W6MU8F6JRY;
+				INFOPLIST_FILE = AgentOfficeApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.agentoffice.app;
+				PRODUCT_NAME = AgentOffice;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1768E1A087694FC38E66B6D3 /* Build configuration list for PBXProject "AgentOffice" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				069AF6365C7A48EE9D0E3259 /* Debug */,
+				302699AAC3B74BA8A5B986FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5AA3C2C06C9D4020A45C60DB /* Build configuration list for PBXNativeTarget "AgentWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				70557592916044E59F18F9E4 /* Debug */,
+				5888FFB262154CB5A909D011 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BFBC5BC1C9064AEA94CF52D5 /* Build configuration list for PBXNativeTarget "AgentOfficeApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				400E578DB92E4E349FBE8962 /* Debug */,
+				DC7BF93EAFF64F919B75F7A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29641FF6B2A14560AB08DDCF /* Project object */;
+}

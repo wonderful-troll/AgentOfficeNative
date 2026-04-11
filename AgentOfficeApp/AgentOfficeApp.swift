@@ -1,5 +1,6 @@
 import SwiftUI
 import WidgetKit
+import ServiceManagement
 
 @main
 struct AgentOfficeApp: App {
@@ -43,6 +44,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         // 파일 워처 + Darwin 알림 시작
         startWatcher()
+
+        // 로그인 자동시작 등록 (SMAppService — App Store 규정 준수)
+        try? SMAppService.mainApp.register()
     }
 
     @objc func togglePopover() {

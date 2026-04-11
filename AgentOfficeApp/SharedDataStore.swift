@@ -1,8 +1,7 @@
 import Foundation
 import WidgetKit
 
-let appGroupID      = "group.com.agentoffice.app"
-let pipelineDataKey = "pipelineData"
+let appGroupID           = "group.com.agentoffice.app"
 let widgetStatusFileName = "pipeline_status.json"
 
 struct SharedDataStore {

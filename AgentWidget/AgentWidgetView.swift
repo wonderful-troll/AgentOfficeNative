@@ -1,7 +1,7 @@
 import SwiftUI
 import WidgetKit
 
-// ── Top-level widget view — dispatches to size-specific layouts ────────────
+// ── Top-level widget view ──────────────────────────────────────────────────
 
 struct AgentWidgetView: View {
     let data: PipelineData
@@ -9,10 +9,11 @@ struct AgentWidgetView: View {
 
     var body: some View {
         switch family {
-        case .systemSmall:  SmallWidgetView(data: data)
-        case .systemMedium: MediumWidgetView(data: data)
-        case .systemLarge:  LargeWidgetView(data: data)
-        default:            MediumWidgetView(data: data)
+        case .systemSmall:      SmallWidgetView(data: data)
+        case .systemMedium:     MediumWidgetView(data: data)
+        case .systemLarge:      LargeWidgetView(data: data)
+        case .systemExtraLarge: ExtraLargeWidgetView(data: data)
+        default:                MediumWidgetView(data: data)
         }
     }
 }
@@ -22,62 +23,87 @@ struct AgentWidgetView: View {
 struct SmallWidgetView: View {
     let data: PipelineData
 
-    private var overallProgress: Double {
-        let statuses = AgentID.allCases.map { data.status(for: $0) }
-        return statuses.map(\.progress).reduce(0, +) / Double(AgentID.allCases.count)
+    private var activeAgent: (AgentID, AgentStatus)? {
+        AgentID.allCases.compactMap { id -> (AgentID, AgentStatus)? in
+            let s = data.status(for: id)
+            return s.state == .working ? (id, s) : nil
+        }.first
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 6) {
             // Header
-            Label("Agent Office", systemImage: "person.3.fill")
-                .font(.system(size: 10, weight: .semibold))
-                .foregroundStyle(.secondary)
+            HStack {
+                Image(systemName: "person.3.fill")
+                    .font(.system(size: 9, weight: .semibold))
+                    .foregroundStyle(.secondary)
+                Text("Agent Office")
+                    .font(.system(size: 9, weight: .semibold))
+                    .foregroundStyle(.secondary)
+                Spacer()
+                statusDot
+            }
 
             Spacer()
 
-            // Orchestrator
-            HStack(spacing: 8) {
-                Image(systemName: "target")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(orchAccent)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("오케스트레이터")
-                        .font(.system(size: 11, weight: .semibold))
-                        .foregroundStyle(.primary)
-                    Text(data.orchMessage)
-                        .font(.system(size: 9, design: .monospaced))
+            if let (id, status) = activeAgent {
+                // 활성 에이전트 강조
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack(spacing: 6) {
+                        Image(systemName: id.icon)
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundStyle(id.color)
+                        Text(id.title)
+                            .font(.system(size: 13, weight: .bold))
+                            .foregroundStyle(.primary)
+                    }
+                    Text(status.message)
+                        .font(.system(size: 9))
                         .foregroundStyle(.secondary)
-                        .lineLimit(1)
+                        .lineLimit(2)
+                    ProgressView(value: status.progress)
+                        .tint(id.color)
+                        .scaleEffect(x: 1, y: 0.7)
+                }
+            } else {
+                // 대기 상태
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(data.orchState == .done ? "완료" : "대기 중")
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundStyle(data.orchState == .done ? Color.green : Color.secondary)
+                    Text(data.orchMessage)
+                        .font(.system(size: 9))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(2)
                 }
             }
 
-            // Overall progress
-            GeometryReader { g in
-                ZStack(alignment: .leading) {
-                    Capsule().fill(Color.secondary.opacity(0.15)).frame(height: 4)
-                    Capsule()
-                        .fill(data.orchState == .done ? Color.green : Color.accentColor)
-                        .frame(width: g.size.width * overallProgress, height: 4)
+            Spacer()
+
+            // 5개 에이전트 미니 도트
+            HStack(spacing: 5) {
+                ForEach(AgentID.allCases, id: \.self) { id in
+                    let s = data.status(for: id)
+                    Circle()
+                        .fill(dotColor(for: id, state: s.state))
+                        .frame(width: 6, height: 6)
                 }
             }
-            .frame(height: 4)
-
-            // Log
-            Text(data.logMessage)
-                .font(.system(size: 8, design: .monospaced))
-                .foregroundStyle(.tertiary)
-                .lineLimit(1)
-                .truncationMode(.middle)
         }
         .padding(14)
     }
 
-    private var orchAccent: Color {
-        switch data.orchState {
-        case .idle:    return Color.secondary
-        case .working: return Color.accentColor
-        case .done:    return Color.green
+    private var statusDot: some View {
+        Circle()
+            .fill(data.isRunning ? Color.accentColor : (data.orchState == .done ? Color.green : Color.secondary.opacity(0.3)))
+            .frame(width: 6, height: 6)
+    }
+
+    private func dotColor(for id: AgentID, state: AgentState) -> Color {
+        switch state {
+        case .idle:    return Color.secondary.opacity(0.2)
+        case .working: return id.color
+        case .done:    return Color.green.opacity(0.7)
         }
     }
 }
@@ -89,56 +115,35 @@ struct MediumWidgetView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Header row
+            // Header
             HStack(spacing: 6) {
-                Label("Agent Office", systemImage: "person.3.fill")
+                Image(systemName: "person.3.fill")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundStyle(.secondary)
+                Text("Agent Office")
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundStyle(.secondary)
                 Spacer()
-                if data.isRunning {
-                    Label("실행 중", systemImage: "circle.fill")
-                        .symbolRenderingMode(.hierarchical)
-                        .font(.system(size: 8, weight: .semibold))
-                        .foregroundStyle(Color.accentColor)
-                } else if data.orchState == .done {
-                    Label("완료", systemImage: "checkmark.circle.fill")
-                        .font(.system(size: 8, weight: .semibold))
-                        .foregroundStyle(Color.green)
-                }
+                statusBadge
             }
             .padding(.horizontal, 14)
             .padding(.top, 12)
-            .padding(.bottom, 6)
-
-            // Orchestrator message
-            HStack(spacing: 6) {
-                Image(systemName: "target")
-                    .font(.system(size: 10, weight: .semibold))
-                    .foregroundStyle(orchAccent)
-                Text(data.orchMessage)
-                    .font(.system(size: 9, design: .monospaced))
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-                Spacer()
-            }
-            .padding(.horizontal, 14)
             .padding(.bottom, 8)
 
-            Divider().padding(.horizontal, 14)
-
             // 5 agent cells
-            HStack(spacing: 0) {
+            HStack(spacing: 6) {
                 ForEach(AgentID.allCases, id: \.self) { id in
                     MediumAgentCell(id: id, status: data.status(for: id))
                 }
             }
             .padding(.horizontal, 10)
-            .padding(.vertical, 8)
 
-            // Log
+            Spacer()
+
+            // Log footer
             Text(data.logMessage)
                 .font(.system(size: 8, design: .monospaced))
-                .foregroundStyle(.tertiary)
+                .foregroundStyle(.secondary)
                 .lineLimit(1)
                 .truncationMode(.middle)
                 .padding(.horizontal, 14)
@@ -146,11 +151,23 @@ struct MediumWidgetView: View {
         }
     }
 
-    private var orchAccent: Color {
-        switch data.orchState {
-        case .idle:    return .secondary
-        case .working: return .accentColor
-        case .done:    return .green
+    private var statusBadge: some View {
+        Group {
+            if data.isRunning {
+                HStack(spacing: 3) {
+                    Circle().fill(Color.accentColor).frame(width: 5, height: 5)
+                    Text("실행 중").font(.system(size: 8, weight: .semibold)).foregroundStyle(.accentColor)
+                }
+                .padding(.horizontal, 6).padding(.vertical, 2)
+                .background(Capsule().fill(Color.accentColor.opacity(0.1)))
+            } else if data.orchState == .done {
+                HStack(spacing: 3) {
+                    Image(systemName: "checkmark").font(.system(size: 7, weight: .bold)).foregroundStyle(.green)
+                    Text("완료").font(.system(size: 8, weight: .semibold)).foregroundStyle(.green)
+                }
+                .padding(.horizontal, 6).padding(.vertical, 2)
+                .background(Capsule().fill(Color.green.opacity(0.1)))
+            }
         }
     }
 }
@@ -160,46 +177,51 @@ private struct MediumAgentCell: View {
     let status: AgentStatus
 
     var body: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: 5) {
             ZStack {
                 Circle()
                     .fill(cellBg)
-                    .frame(width: 28, height: 28)
+                    .frame(width: 32, height: 32)
+                    .overlay(
+                        Circle().stroke(status.state == .working ? id.color.opacity(0.6) : Color.clear, lineWidth: 1.5)
+                    )
                 Image(systemName: id.icon)
-                    .font(.system(size: 11, weight: .semibold))
+                    .font(.system(size: 12, weight: .semibold))
                     .foregroundStyle(iconColor)
             }
 
             Text(id.title)
-                .font(.system(size: 7.5, weight: .semibold))
+                .font(.system(size: 8, weight: .semibold))
                 .foregroundStyle(status.state == .idle ? Color.secondary : Color.primary)
 
-            GeometryReader { g in
-                ZStack(alignment: .leading) {
-                    Capsule().fill(Color.secondary.opacity(0.15)).frame(height: 2)
-                    Capsule()
-                        .fill(status.state == .done ? Color.green : id.color)
-                        .frame(width: g.size.width * status.progress, height: 2)
-                }
-            }
-            .frame(height: 2)
-
+            // 상태 표시
             if status.state == .working {
-                Circle().fill(id.color).frame(width: 4, height: 4)
+                Capsule()
+                    .fill(id.color)
+                    .frame(width: 24, height: 3)
             } else if status.state == .done {
-                Image(systemName: "checkmark").font(.system(size: 6, weight: .bold)).foregroundStyle(.green)
+                Image(systemName: "checkmark")
+                    .font(.system(size: 7, weight: .bold))
+                    .foregroundStyle(.green)
             } else {
-                Color.clear.frame(width: 4, height: 4)
+                Capsule()
+                    .fill(Color.secondary.opacity(0.15))
+                    .frame(width: 24, height: 3)
             }
         }
         .frame(maxWidth: .infinity)
-        .opacity(status.state == .idle ? 0.45 : 1.0)
+        .padding(.vertical, 8)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(status.state == .working ? id.color.opacity(0.08) : Color.clear)
+        )
+        .opacity(status.state == .idle ? 0.4 : 1.0)
     }
 
     private var cellBg: Color {
         switch status.state {
-        case .idle:    return Color.secondary.opacity(0.1)
-        case .working: return id.color.opacity(0.15)
+        case .idle:    return Color.secondary.opacity(0.08)
+        case .working: return id.color.opacity(0.18)
         case .done:    return Color.green.opacity(0.12)
         }
     }
@@ -221,64 +243,43 @@ struct LargeWidgetView: View {
         VStack(spacing: 0) {
             // Header
             HStack {
-                Label("Agent Office", systemImage: "person.3.fill")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(.secondary)
-                Spacer()
-            }
-            .padding(.horizontal, 16)
-            .padding(.top, 14)
-            .padding(.bottom, 10)
-
-            // Orchestrator row
-            HStack(spacing: 10) {
-                ZStack {
-                    Circle()
-                        .fill(orchBg)
-                        .frame(width: 30, height: 30)
-                    Image(systemName: "target")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(orchAccent)
-                }
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("오케스트레이터")
-                        .font(.system(size: 11, weight: .semibold))
-                        .foregroundStyle(.primary)
+                    HStack(spacing: 5) {
+                        Image(systemName: "person.3.fill")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundStyle(.secondary)
+                        Text("Agent Office")
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundStyle(.primary)
+                    }
                     Text(data.orchMessage)
                         .font(.system(size: 9, design: .monospaced))
                         .foregroundStyle(.secondary)
                 }
                 Spacer()
-                if data.orchState == .done {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundStyle(.green)
-                        .font(.system(size: 14))
-                }
+                orchStatusIcon
             }
-            .padding(.horizontal, 14)
-            .padding(.vertical, 8)
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(orchRowBg)
-            )
-            .padding(.horizontal, 14)
-            .padding(.bottom, 8)
+            .padding(.horizontal, 16)
+            .padding(.top, 14)
+            .padding(.bottom, 10)
 
             Divider().padding(.horizontal, 14).padding(.bottom, 6)
 
             // Agent rows
             ForEach(AgentID.allCases, id: \.self) { id in
                 LargeAgentRow(id: id, status: data.status(for: id))
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 2)
             }
 
             Spacer()
 
-            Divider()
             // Log footer
+            Divider().padding(.horizontal, 14)
             HStack(spacing: 6) {
-                Capsule()
+                RoundedRectangle(cornerRadius: 1)
                     .fill(Color.secondary.opacity(0.4))
-                    .frame(width: 2, height: 12)
+                    .frame(width: 2, height: 10)
                 Text(data.logMessage)
                     .font(.system(size: 9, design: .monospaced))
                     .foregroundStyle(.secondary)
@@ -291,24 +292,31 @@ struct LargeWidgetView: View {
         }
     }
 
-    private var orchAccent: Color {
-        switch data.orchState {
-        case .idle:    return .secondary
-        case .working: return .accentColor
-        case .done:    return .green
+    private var orchStatusIcon: some View {
+        Group {
+            if data.isRunning {
+                ZStack {
+                    Circle().fill(Color.accentColor.opacity(0.15)).frame(width: 28, height: 28)
+                    Image(systemName: "bolt.fill")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(.accentColor)
+                }
+            } else if data.orchState == .done {
+                ZStack {
+                    Circle().fill(Color.green.opacity(0.15)).frame(width: 28, height: 28)
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundStyle(.green)
+                }
+            } else {
+                ZStack {
+                    Circle().fill(Color.secondary.opacity(0.08)).frame(width: 28, height: 28)
+                    Image(systemName: "moon.zzz")
+                        .font(.system(size: 11))
+                        .foregroundStyle(.secondary)
+                }
+            }
         }
-    }
-    private var orchBg: Color {
-        switch data.orchState {
-        case .idle:    return Color.secondary.opacity(0.1)
-        case .working: return Color.accentColor.opacity(0.12)
-        case .done:    return Color.green.opacity(0.12)
-        }
-    }
-    private var orchRowBg: Color {
-        data.orchState == .working
-            ? Color.accentColor.opacity(0.06)
-            : Color.secondary.opacity(0.05)
     }
 }
 
@@ -319,53 +327,209 @@ private struct LargeAgentRow: View {
     var body: some View {
         HStack(spacing: 10) {
             ZStack {
-                Circle().fill(cellBg).frame(width: 26, height: 26)
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(cellBg)
+                    .frame(width: 30, height: 30)
                 Image(systemName: id.icon)
-                    .font(.system(size: 10, weight: .semibold))
+                    .font(.system(size: 12, weight: .semibold))
                     .foregroundStyle(iconColor)
             }
 
-            Text(id.title)
-                .font(.system(size: 10, weight: .semibold))
-                .foregroundStyle(status.state == .idle ? Color.secondary : Color.primary)
-                .frame(width: 36, alignment: .leading)
-
-            GeometryReader { g in
-                ZStack(alignment: .leading) {
-                    Capsule().fill(Color.secondary.opacity(0.15)).frame(height: 3)
-                    Capsule()
-                        .fill(status.state == .done ? Color.green : id.color)
-                        .frame(width: g.size.width * status.progress, height: 3)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(id.title)
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(status.state == .idle ? Color.secondary : Color.primary)
+                if status.state == .working, !status.message.isEmpty {
+                    Text(status.message)
+                        .font(.system(size: 9))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
                 }
             }
-            .frame(height: 3)
 
-            Group {
-                if status.state == .working {
-                    Text("실행 중")
-                        .font(.system(size: 8, weight: .semibold))
+            Spacer()
+
+            if status.state == .working {
+                HStack(spacing: 4) {
+                    ProgressView(value: status.progress)
+                        .tint(id.color)
+                        .frame(width: 50)
+                        .scaleEffect(x: 1, y: 0.8)
+                    Text("\(Int(status.progress * 100))%")
+                        .font(.system(size: 9, weight: .semibold))
                         .foregroundStyle(id.color)
-                } else if status.state == .done {
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.system(size: 11))
-                        .foregroundStyle(.green)
-                } else {
-                    Text("대기")
-                        .font(.system(size: 8))
-                        .foregroundStyle(.tertiary)
+                        .frame(width: 28, alignment: .trailing)
                 }
+            } else if status.state == .done {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 14))
+                    .foregroundStyle(.green)
+            } else {
+                Text("대기")
+                    .font(.system(size: 9))
+                    .foregroundStyle(.tertiary)
             }
-            .frame(width: 40, alignment: .trailing)
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 5)
-        .opacity(status.state == .idle ? 0.5 : 1.0)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 7)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(status.state == .working ? id.color.opacity(0.07) : Color.clear)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(status.state == .working ? id.color.opacity(0.25) : Color.clear, lineWidth: 1)
+                )
+        )
+        .opacity(status.state == .idle ? 0.45 : 1.0)
     }
 
     private var cellBg: Color {
         switch status.state {
         case .idle:    return Color.secondary.opacity(0.08)
-        case .working: return id.color.opacity(0.15)
+        case .working: return id.color.opacity(0.18)
+        case .done:    return Color.green.opacity(0.12)
+        }
+    }
+    private var iconColor: Color {
+        switch status.state {
+        case .idle:    return .secondary
+        case .working: return id.color
+        case .done:    return .green
+        }
+    }
+}
+
+// ── Extra Large (세로 최대 활용) ────────────────────────────────────────────
+
+struct ExtraLargeWidgetView: View {
+    let data: PipelineData
+
+    var body: some View {
+        HStack(spacing: 0) {
+            // 왼쪽: 오케스트레이터 + 상태
+            VStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Image(systemName: "person.3.fill")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(.secondary)
+                    Text("Agent Office")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundStyle(.primary)
+                }
+                .padding(.top, 4)
+
+                Divider()
+
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("오케스트레이터")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(.secondary)
+                    Text(data.orchMessage)
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(.primary)
+                        .lineLimit(3)
+                }
+
+                Spacer()
+
+                // 로그
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("최근 로그")
+                        .font(.system(size: 9, weight: .semibold))
+                        .foregroundStyle(.tertiary)
+                    Text(data.logMessage)
+                        .font(.system(size: 10, design: .monospaced))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(2)
+                }
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity)
+
+            Divider().padding(.vertical, 12)
+
+            // 오른쪽: 에이전트 5개 세로 리스트
+            VStack(spacing: 4) {
+                ForEach(AgentID.allCases, id: \.self) { id in
+                    ExtraLargeAgentRow(id: id, status: data.status(for: id))
+                }
+            }
+            .padding(12)
+            .frame(maxWidth: .infinity)
+        }
+    }
+}
+
+private struct ExtraLargeAgentRow: View {
+    let id: AgentID
+    let status: AgentStatus
+
+    var body: some View {
+        HStack(spacing: 10) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 9)
+                    .fill(cellBg)
+                    .frame(width: 36, height: 36)
+                Image(systemName: id.icon)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(iconColor)
+            }
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text(id.title)
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(status.state == .idle ? Color.secondary : Color.primary)
+                if status.state == .working, !status.message.isEmpty {
+                    Text(status.message)
+                        .font(.system(size: 10))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                } else if status.state == .done {
+                    Text("완료")
+                        .font(.system(size: 10))
+                        .foregroundStyle(.green)
+                } else {
+                    Text("대기 중")
+                        .font(.system(size: 10))
+                        .foregroundStyle(.tertiary)
+                }
+            }
+
+            Spacer()
+
+            if status.state == .working {
+                VStack(alignment: .trailing, spacing: 3) {
+                    Text("\(Int(status.progress * 100))%")
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundStyle(id.color)
+                    ProgressView(value: status.progress)
+                        .tint(id.color)
+                        .frame(width: 60)
+                        .scaleEffect(x: 1, y: 0.8)
+                }
+            } else if status.state == .done {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 18))
+                    .foregroundStyle(.green)
+            }
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(status.state == .working ? id.color.opacity(0.08) : Color.secondary.opacity(0.04))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(status.state == .working ? id.color.opacity(0.3) : Color.clear, lineWidth: 1.5)
+                )
+        )
+        .opacity(status.state == .idle ? 0.4 : 1.0)
+    }
+
+    private var cellBg: Color {
+        switch status.state {
+        case .idle:    return Color.secondary.opacity(0.08)
+        case .working: return id.color.opacity(0.18)
         case .done:    return Color.green.opacity(0.12)
         }
     }

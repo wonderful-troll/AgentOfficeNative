@@ -56,6 +56,6 @@ struct AgentOfficeWidget: Widget {
         }
         .configurationDisplayName("Agent Office")
         .description("AI 에이전트 파이프라인 상태를 실시간으로 확인하세요")
-        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge, .systemExtraLarge])
     }
 }
